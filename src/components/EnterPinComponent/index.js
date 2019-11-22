@@ -41,7 +41,7 @@ export default EnterPinComponent = props => {
           await AsyncStorage.setItem(
             "user",
             JSON.stringify(response.value.data.response)
-          );
+          );[]
           props.navigation.navigate("MainNavigation");
         } else {
           ToastAndroid.show("Login Error", ToastAndroid.SHORT);
@@ -54,7 +54,7 @@ export default EnterPinComponent = props => {
         ToastAndroid.show("Login Error", ToastAndroid.SHORT);
       });
 
-    // Axios.post('https://linkwae.herokuapp.com/users/login', data)
+    // Axios.post('http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/login', data)
     // .then(r => {
     //   console.log(r.data);
     //   console.log(props);
