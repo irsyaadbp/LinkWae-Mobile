@@ -28,6 +28,9 @@ export default EnterPinComponent = props => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
+    if (props.mode == 'sendMoney') {
+      props.submit(pin);
+    } else {
     const data = {
       phone: props.phoneNumber,
       pin
@@ -66,6 +69,7 @@ export default EnterPinComponent = props => {
     // .catch(e => {
     //   console.log(e)
     // })
+    }
   };
 
   useEffect(() => {
