@@ -41,7 +41,7 @@ export default EnterPinComponent = props => {
           await AsyncStorage.setItem(
             "user",
             JSON.stringify(response.value.data.response)
-          );[]
+          );
           props.navigation.navigate("MainNavigation");
         } else {
           ToastAndroid.show("Login Error", ToastAndroid.SHORT);
