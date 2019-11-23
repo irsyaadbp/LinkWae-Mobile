@@ -24,15 +24,29 @@ export default OnBoardingScreen = props => {
 
   useEffect(() => {
     // AsyncStorage.removeItem("user");
-    dispatch(getUser())
-      .then(result => {
-        if (result.value) {
-          props.navigation.navigate("HomeScreen");
-        }else{
-          props.navigation.navigate("LoginScreen");
-        }
-      })
-      .catch(err => console.log(err, "err"));
+    AsyncStorage.getItem("accepted").then(r => {
+      if (r) {
+        dispatch(getUser())
+        .then(result => {
+          if (result.value) {
+            props.navigation.navigate("HomeScreen");
+          }else{
+            props.navigation.navigate("LoginScreen");
+          }
+        })
+        .catch(err => console.log(err, "err"));
+      }
+    });
+    
+    // dispatch(getUser())
+    //   .then(result => {
+    //     if (result.value) {
+    //       props.navigation.navigate("HomeScreen");
+    //     }else{
+    //       props.navigation.navigate("LoginScreen");
+    //     }
+    //   })
+    //   .catch(err => console.log(err, "err"));
     // AsyncStorage.getItem("token").then(r => {
     //   console.log(r);
     //   if (r) return props.navigation.navigate("HomeScreen");

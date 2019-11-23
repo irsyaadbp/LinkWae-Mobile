@@ -89,7 +89,7 @@ export default RegisterScreen = props => {
     // setIsLoading(true);
     if (pin == confirmPin) {
       // Axios.put(
-      //   "https://linkwae.herokuapp.com/users/register",
+      //   "http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/register",
       //   formData,
       //   config
       // )

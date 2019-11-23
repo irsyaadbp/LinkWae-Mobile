@@ -26,7 +26,7 @@ export default EnterPinComponent = props => {
     setIsLoading(true);
     const data = {user: phoneNumber, otp: pin};
     console.log(data)
-    Axios.post('https://linkwae.herokuapp.com/users/verifyOtp', data)
+    Axios.post('http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/verifyOtp', data)
     .then(r => {
       console.log(r.data);
       if (r.data.status == 'success') props.navigation.navigate('RegisterScreen', {phoneNumber});    
@@ -45,7 +45,7 @@ export default EnterPinComponent = props => {
     if (chance < 3) {
       setIsLoading(true);
       setChance(chance + 1);
-      Axios.post('https://linkwae.herokuapp.com/users/checkAuth', {phone: phoneNumber})
+      Axios.post('http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/checkAuth', {phone: phoneNumber})
       .then(()=> setIsLoading(false))
       .catch(()=> setIsLoading(false));
     }

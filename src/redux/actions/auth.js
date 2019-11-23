@@ -6,7 +6,7 @@ export const register = (formData, config) => {
   return {
     type: "USER_REGISTER",
     payload: axios.post(
-      `https://linkwae.herokuapp.com/users/register`,
+      `http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/register`,
       formData,
       config
     )
@@ -16,7 +16,7 @@ export const register = (formData, config) => {
 export const login = input => {
   return {
     type: "USER_LOGIN",
-    payload: axios.post(`https://linkwae.herokuapp.com/users/login`, input)
+    payload: axios.post(`http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/login`, input)
   };
 };
 
@@ -33,3 +33,10 @@ export const isIstalled = () => {
     payload: AsyncStorage.getItem("installed")
   };
 };
+
+export const getUserById = (id) => {
+  return {
+    type: "GET_USER_BY_ID",
+    payload: axios.get(`http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/id/${id}`)
+  }
+}

@@ -34,7 +34,7 @@ export default AuthScreen = props => {
   const handleSubmit = () => {
     if (phoneValidation) {
       setIsLoading(true);
-      axios.post('https://linkwae.herokuapp.com/users/checkAuth', {phone: phoneNumber})
+      axios.post('http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/checkAuth', {phone: phoneNumber})
       .then(r => {
         console.log(r.data);
         if (r.data.status == 'success') {
