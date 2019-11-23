@@ -103,14 +103,15 @@ const auth = (state = initialState, action) => {
       };
     case "GET_USER_BY_ID_FULFILLED":
       const user = action.payload.data.response;
-      console.log(user, 'kata-kata')
-      AsyncStorage.setItem('user', JSON.stringify({jwt: autResponse.jwt, user}))
+      console.log({jwt: state.authResponse.jwt, user}, 'kampret')
+      AsyncStorage.setItem('user', JSON.stringify({jwt: state.authResponse.jwt, user}))
+      const old = state.authResponse;
       return {
         ...state,
         isLoading: false,
         isRejected: false,
         isInstalled: true,
-        authResponse: {jwt: autResponse.jwt, user}
+        authResponse: {jwt: state.authResponse.jwt, user}
       };
 
     default:
