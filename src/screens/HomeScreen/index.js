@@ -5,14 +5,17 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
+  RefreshControl,
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { Icon } from "native-base";
 
 import styles from "./styles";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserById } from '../../redux/actions/auth';
+import Amount from "../TopUpScreen";
 
 const { width, height } = Dimensions.get("window");
 export default HomeScreen = props => {
@@ -21,11 +24,34 @@ export default HomeScreen = props => {
   const [promoAlign, setPromoAlign] = useState("start");
   const [infoAlign, setInfoAlign] = useState("start");
   const [merchantAlign, setMerchantAlign] = useState("start");
+  const [topUp, setTopUp] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const { authResponse } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    // axios
+    //   .get(
+    //     // `http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/transactions`
+    //     `http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/id/${authResponse.user.id}`
+    //   )
+    //   .then(response => {
+    //     console.log(response, "hai");
+    //     setListHistory(response.data.response);
+    //     setRefreshing(false);
+    //   });
+
+    dispatch(getUserById(authResponse.user.id)).then(() => setRefreshing(false)).catch(() => setRefreshing(false))
+  }, [refreshing]);
 
   return (
-    <ScrollView>
+    <ScrollView refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
+      <Amount navigation={props.navigation} visible={topUp} hide={() => setTopUp(false)} />
       {/* Foto profil, Name, Phone Books Button, Favorite Button */}
       <View style={styles.profile}>
         <TouchableOpacity
@@ -95,33 +121,33 @@ export default HomeScreen = props => {
             ></Image>
             <Text style={styles.shortcutText}>Send Money</Text>
           </TouchableOpacity>
-          <View style={styles.shortcutItem}>
+          <TouchableOpacity style={styles.shortcutItem} onPress={() => setTopUp(true)}>
             <Image
               style={styles.shortcutImage}
               source={require("../../../assets/topup.png")}
             ></Image>
             <Text style={styles.shortcutText}>Top Up</Text>
-          </View>
-          <View style={styles.shortcutItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.shortcutItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.shortcutImage}
               source={require("../../../assets/ticketcode.png")}
             ></Image>
             <Text style={styles.shortcutText}>Ticket Code</Text>
-          </View>
-          <View style={styles.shortcutItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.shortcutItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.shortcutImage}
               source={require("../../../assets/all.png")}
             ></Image>
             <Text style={styles.shortcutText}>See All</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       {/* ====================================================== */}
 
       {/* Add Payment Method */}
-      <View style={styles.addPayment}>
+      <TouchableOpacity style={styles.addPayment} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
         <Image
           style={styles.addPaymentImage}
           source={require("../../../assets/addpaymethod.png")}
@@ -133,70 +159,70 @@ export default HomeScreen = props => {
           </Text>
         </View>
         <Icon style={styles.addPaymentIcon} name="add"></Icon>
-      </View>
+      </TouchableOpacity>
       {/* ====================================================== */}
       <View style={styles.feature}>
         {/* Pulsa Data, Games, Electricity, PDAM */}
         <View style={styles.featureRow}>
-          <View style={styles.featureItem}>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('PulsaDataComponent')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/pulsadata.png")}
             ></Image>
             <Text style={styles.featureText}>Pulsa/Data</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/games.png")}
             ></Image>
             <Text style={styles.featureText}>Games</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/electricity.png")}
             ></Image>
             <Text style={styles.featureText}>Electricity</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/pdam.png")}
             ></Image>
             <Text style={styles.featureText}>PDAM</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         {/* LinkAja Berbagi, Kartu Uang Elektronik, Transport, More */}
         <View style={styles.featureRow}>
-          <View style={styles.featureItem}>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/berbagi.png")}
             ></Image>
             <Text style={styles.featureText}>LinkAja Berbagi</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/emoney.png")}
             ></Image>
             <Text style={styles.featureText}>Kartu Uang Electricity</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/transport.png")}
             ></Image>
             <Text style={styles.featureText}>Transport</Text>
-          </View>
-          <View style={styles.featureItem}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.featureItem} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
             <Image
               style={styles.featureImage}
               source={require("../../../assets/more.png")}
             ></Image>
             <Text style={styles.featureText}>More</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       {/* ====================================================== */}
@@ -214,9 +240,9 @@ export default HomeScreen = props => {
             { url: require("../../../assets/promo5.jpg") }
           ]}
           renderItem={({ item }) => (
-            <View style={styles.topCarouselItem}>
+            <TouchableOpacity style={styles.topCarouselItem} onPress={() => props.navigation.navigate('DealsDetailComponent')}>
               <Image style={styles.topCarouselImage} source={item.url}></Image>
-            </View>
+            </TouchableOpacity>
           )}
           onSnapToItem={index => setTopCarouselIndex(index)}
           autoplay={true}
@@ -281,14 +307,14 @@ export default HomeScreen = props => {
               }
             ]}
             renderItem={({ item }) => (
-              <View style={styles.promoCarouselItem}>
+              <TouchableOpacity style={styles.promoCarouselItem} onPress={() => props.navigation.navigate('DealsDetailComponent')}>
                 <Image
                   style={styles.promoCarouselImage}
                   source={item.url}
                 ></Image>
                 <Text style={styles.promoCarouselTitle}>{item.title}</Text>
                 <Text style={styles.promoCarouselSubtitle}>{item.summary}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </View>
@@ -343,14 +369,14 @@ export default HomeScreen = props => {
               }
             ]}
             renderItem={({ item }) => (
-              <View style={styles.promoCarouselItem}>
+              <TouchableOpacity style={styles.promoCarouselItem} onPress={() => props.navigation.navigate('DealsDetailComponent')}>
                 <Image
                   style={styles.promoCarouselImage}
                   source={item.url}
                 ></Image>
                 <Text style={styles.promoCarouselTitle}>{item.title}</Text>
                 <Text style={styles.promoCarouselSubtitle}>{item.summary}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </View>
@@ -384,67 +410,67 @@ export default HomeScreen = props => {
             </TouchableOpacity>
           </TouchableOpacity>
         ) : (
-          /* Carousell List Merchants */
-          <View>
-            <Carousel
-              sliderWidth={width - 40}
-              itemWidth={width / 3}
-              inactiveSlideScale={1}
-              activeSlideAlignment={merchantAlign}
-              onSnapToItem={index =>
-                index == 4 - 2
-                  ? setMerchantAlign("end")
-                  : setMerchantAlign("start")
-              }
-              data={[
-                {
-                  url: "https://picsum.photos/id/500/500/200",
-                  title: "This is Title of Merchant",
-                  distance: "0.37"
-                },
-                {
-                  url: "https://picsum.photos/id/500/500/200",
-                  title: "This is Title of Merchant",
-                  distance: "0.4"
-                },
-                {
-                  url: "https://picsum.photos/id/500/500/200",
-                  title: "This is Title of Merchant",
-                  distance: "0.45"
-                },
-                {
-                  url: "https://picsum.photos/id/500/500/200",
-                  title: "This is Title of Merchant",
-                  distance: "0.65"
-                },
-                {
-                  url: "https://picsum.photos/id/500/500/200",
-                  title: "This is Title of Merchant",
-                  distance: "0.65"
+            /* Carousell List Merchants */
+            <View>
+              <Carousel
+                sliderWidth={width - 40}
+                itemWidth={width / 3}
+                inactiveSlideScale={1}
+                activeSlideAlignment={merchantAlign}
+                onSnapToItem={index =>
+                  index == 4 - 2
+                    ? setMerchantAlign("end")
+                    : setMerchantAlign("start")
                 }
-              ]}
-              renderItem={({ item }) => (
-                <View style={styles.merchantCarouselItem}>
-                  <Image
-                    style={styles.merchantCarouselImage}
-                    source={{ uri: item.url }}
-                  ></Image>
-                  <Image
-                    style={styles.merchantCarouselIcon}
-                    source={{ uri: item.url }}
-                  ></Image>
-                  <Text style={styles.merchantCarouselTitle}>{item.title}</Text>
-                  <Text style={styles.merchantCarouselSubtitle}>
-                    {item.distance}
-                  </Text>
-                  <TouchableOpacity style={styles.merchantDetailButton}>
-                    <Text style={styles.DetailButtonText}>Details</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-          </View>
-        )}
+                data={[
+                  {
+                    url: "https://picsum.photos/id/500/500/200",
+                    title: "This is Title of Merchant",
+                    distance: "0.37"
+                  },
+                  {
+                    url: "https://picsum.photos/id/500/500/200",
+                    title: "This is Title of Merchant",
+                    distance: "0.4"
+                  },
+                  {
+                    url: "https://picsum.photos/id/500/500/200",
+                    title: "This is Title of Merchant",
+                    distance: "0.45"
+                  },
+                  {
+                    url: "https://picsum.photos/id/500/500/200",
+                    title: "This is Title of Merchant",
+                    distance: "0.65"
+                  },
+                  {
+                    url: "https://picsum.photos/id/500/500/200",
+                    title: "This is Title of Merchant",
+                    distance: "0.65"
+                  }
+                ]}
+                renderItem={({ item }) => (
+                  <View style={styles.merchantCarouselItem}>
+                    <Image
+                      style={styles.merchantCarouselImage}
+                      source={{ uri: item.url }}
+                    ></Image>
+                    <Image
+                      style={styles.merchantCarouselIcon}
+                      source={{ uri: item.url }}
+                    ></Image>
+                    <Text style={styles.merchantCarouselTitle}>{item.title}</Text>
+                    <Text style={styles.merchantCarouselSubtitle}>
+                      {item.distance}
+                    </Text>
+                    <TouchableOpacity style={styles.merchantDetailButton} onPress={() => props.navigation.navigate('ComingSoonScreen')}>
+                      <Text style={styles.DetailButtonText}>Details</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            </View>
+          )}
       </View>
       {/* ====================================================== */}
 

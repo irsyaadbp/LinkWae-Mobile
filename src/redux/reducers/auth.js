@@ -1,3 +1,5 @@
+import { AsyncStorage } from "react-native";
+
 const initialState = {
   authResponse: {},
   user: null,
@@ -46,7 +48,7 @@ const auth = (state = initialState, action) => {
         isLoading: false,
         isRejected: false,
         authResponse:
-        
+
           action.payload.data.status === "success" ? action.payload.data.response : null
       };
     case "GET_USER_PENDING":
@@ -68,7 +70,7 @@ const auth = (state = initialState, action) => {
         isRejected: false,
         authResponse: action.payload ? JSON.parse(action.payload) : null
       };
-      case "GET_INSTALLED_PENDING":
+    case "GET_INSTALLED_PENDING":
       return {
         ...state,
         isLoading: true,
@@ -87,6 +89,30 @@ const auth = (state = initialState, action) => {
         isRejected: false,
         isInstalled: true
       };
+    case "GET_USER_BY_ID_PENDING":
+      return {
+        ...state,
+        isLoading: true,
+        isRejected: false
+      };
+    case "GET_USER_BY_ID_REJECTED":
+      return {
+        ...state,
+        isLoading: false,
+        isRejected: true
+      };
+    case "GET_USER_BY_ID_FULFILLED":
+      const user = action.payload.data.response;
+      console.log(user, 'kata-kata')
+      AsyncStorage.setItem('user', JSON.stringify({jwt: autResponse.jwt, user}))
+      return {
+        ...state,
+        isLoading: false,
+        isRejected: false,
+        isInstalled: true,
+        authResponse: {jwt: autResponse.jwt, user}
+      };
+
     default:
       return state;
   }

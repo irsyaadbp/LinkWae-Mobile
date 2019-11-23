@@ -33,3 +33,10 @@ export const isIstalled = () => {
     payload: AsyncStorage.getItem("installed")
   };
 };
+
+export const getUserById = (id) => {
+  return {
+    type: "GET_USER_BY_ID",
+    payload: axios.get(`http://ec2-34-205-127-114.compute-1.amazonaws.com:5000/users/id/${id}`)
+  }
+}
