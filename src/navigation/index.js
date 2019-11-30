@@ -3,6 +3,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import BottomNavigation from './bottom';
 import { LoginScreen, OnBoardingScreen, GetStartedScreen, RegisterScreen, SendMoneyScreen, ComingSoonScreen } from '../screens';
+import DealsDetailComponent from '../screens/HomeScreen/DealsDetailComponent';
+import EmailVerificationComponent from '../screens/HomeScreen/EmailVerificationComponent';
+import PulsaDataComponent from '../screens/HomeScreen/PulsaDataComponent';
 
 const AuthNavigation = createStackNavigator(
   {
@@ -21,6 +24,9 @@ const MainNavigation = createStackNavigator(
     BottomNavigation,
     SendMoneyScreen,
     ComingSoonScreen,
+    DealsDetailComponent,
+    EmailVerificationComponent,
+    PulsaDataComponent,
   },
   {
     initialRouteName: 'BottomNavigation',

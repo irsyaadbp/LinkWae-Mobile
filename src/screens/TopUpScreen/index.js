@@ -8,7 +8,7 @@ import { EnterPinComponent } from '../../components';
 import styles from './styles';
 import Axios from 'axios';
 
-const Amount = props => {
+export default Amount = props => {
   const [amount, setAmount] = useState('');
   // const [userId, setUserId] = useState('');
   const [pin, setPin] = useState('');
@@ -30,10 +30,10 @@ const Amount = props => {
     const data = {
       user_id: authResponse.user.id,
       amount,
-      code_number: props.phone,
-      detail_transaction: 'Kirim uang',
+      code_number: authResponse.user.phone,
+      detail_transaction: 'Top up',
       pin,
-      category_name: 'send'
+      category_name: 'topup'
     }
     console.log(data)
     if (amount != 0 && pin != '') {
@@ -51,7 +51,7 @@ const Amount = props => {
     <>
     <EnterPinComponent mode={'sendMoney'} submit={(pin) => {console.log(pin);setPin(pin); handleSubmit(pin)}} navigation={props.navigation} phoneNumber={authResponse.user.phone} show={modalPin} hide={() => {setModalPin(false);setModalUp(false)}}/>
     <Modal
-      isVisible={props.content == 'amount'}
+      isVisible={props.visible}
       style={styles.modal}
       onBackButtonPress={() => props.hide()}
     >
@@ -93,80 +93,3 @@ const Amount = props => {
     </>
   )
 }
-
-export default SendMoneyScreen = props => {
-  const [content, setContent] = useState('default');
-  const [phone, setPhone] = useState('');
-
-  const handleConfirm = () => {
-    if (phone.length >= 8) {
-      setContent('amount');
-    }
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Icon style={styles.icon} name='arrow-back' onPress={() => props.navigation.goBack()}></Icon>
-        <Text style={styles.title}>Send Money</Text>
-      </View>
-      {content == 'default' && 
-      <View style={styles.body}>
-        <Text style={styles.label}>Which method would you like to use?</Text>
-        <FlatList
-          style={styles.list}
-          data={[
-            {
-              title: 'Snap QR',
-              image: require('../../../assets/sendMoney/snapQr.png'),
-              destination: () => props.navigation.navigate('ComingSoonScreen'),
-            },
-            {
-              title: 'Phone Number',
-              image: require('../../../assets/sendMoney/phoneNumber.png'),
-              destination: () => setContent('phoneNumber'),
-            },
-            {
-              title: 'Bank Account',
-              image: require('../../../assets/sendMoney/bankAccount.png'),
-              destination: () => props.navigation.navigate('ComingSoonScreen'),
-            },
-          ]}
-          renderItem={({item}) => (
-            <TouchableOpacity style={styles.item} onPress={() => item.destination()}>
-              <Image style={styles.image} source={item.image}></Image>
-              <Text style={styles.text}>{item.title}</Text>
-              <Icon style={styles.arrow} name='arrow-dropright'></Icon>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item.title}
-        ></FlatList>
-      </View>}
-      {/* ================================================================== */}
-      {content == 'phoneNumber' && 
-      <View style={styles.body}>
-        <Text style={styles.label}>Phone Number</Text>
-        <View style={styles.inputSection}>
-          <View style={styles.bordered}>
-            <Text style={styles.prefix}>+62</Text>
-            <TextInput keyboardType='number-pad' value={phone} onChangeText={(text) => setPhone(text)} style={styles.phone} placeholder='81212341234'></TextInput>
-          </View>
-          <Icon style={styles.icon} name='bookmarks'></Icon>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={() => handleConfirm()}>
-          <Text style={styles.buttonText}>Confirm</Text>
-        </TouchableOpacity>
-        <View style={styles.divider}/>
-        <View style={styles.history}>
-          <Text style={styles.subtitle}>Recent Transaction</Text>
-          <View style={styles.noHistory}>
-            <Image style={styles.image2} source={require('../../../assets/blankScreen/comingsoon.png')}></Image>
-            <Text style={styles.subtitle}>Oops, no transaction history yet!</Text>
-            <Text style={styles.content}>You have not sent money to anyone! Send money now?</Text>
-          </View>
-        </View>
-      </View>}
-      {content == 'amount' && <Amount navigation={props.navigation} phone={phone} content={content} hide={() => setContent('phoneNumber')} />}
-    </View>
-  )
-};
